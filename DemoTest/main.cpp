@@ -1106,7 +1106,7 @@ vector<int> preorderTraversal(TreeNode* root) {
 }
 
 vector<int> postorderTraversal(TreeNode* root) {
-
+	return NULL;
 }
 
 int main()
