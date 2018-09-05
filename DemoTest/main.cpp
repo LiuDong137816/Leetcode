@@ -1098,15 +1098,27 @@ vector<int> preorderTraversal(TreeNode* root) {
 	vector<int> ivec;
 	if (NULL != root)
 		ivec.push_back(root->val);
+	else
+		return ivec;
 	if(root->lchild != NULL)
 		preorderTraversal(root->lchild);
 	if (root->rchild != NULL)
 		preorderTraversal(root->rchild);
 	return ivec;
 }
-
+vector<int> ivec;
 vector<int> postorderTraversal(TreeNode* root) {
-	return NULL;
+	if (NULL == root)
+		return ivec;
+	if (root->lchild != NULL) {
+		preorderTraversal(root->lchild);
+	}
+	if (root->rchild != NULL) {
+		preorderTraversal(root->rchild);
+	}
+	if (root != NULL)
+		ivec.push_back(root->val);
+	return ivec;
 }
 
 int main()
@@ -1116,8 +1128,11 @@ int main()
 	//	for (x = -18; x < 18; x += 0.5f / s) 
 	TreeNode *root;
 	CreateTree(root);
-	preorderTraversal(root);
-	PrintTree(root);
+	vector<int> ivec = postorderTraversal(root);
+	for (vector<int>::iterator it = ivec.begin(); it != ivec.end(); it++) {
+		cout << *it << "  ";
+	}
+	//PrintTree(root);
 	system("pause");
 	return 0;
 }
