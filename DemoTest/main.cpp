@@ -1106,19 +1106,53 @@ vector<int> preorderTraversal(TreeNode* root) {
 		preorderTraversal(root->rchild);
 	return ivec;
 }
-vector<int> ivec;
-vector<int> postorderTraversal(TreeNode* root) {
-	if (NULL == root)
-		return ivec;
+
+void Help_postTraversal(TreeNode* root, vector<int> &ivec) {
 	if (root->lchild != NULL) {
-		preorderTraversal(root->lchild);
+		Help_postTraversal(root->lchild, ivec);
 	}
 	if (root->rchild != NULL) {
-		preorderTraversal(root->rchild);
+		Help_postTraversal(root->rchild, ivec);
 	}
 	if (root != NULL)
 		ivec.push_back(root->val);
+}
+
+vector<int> postorderTraversal(TreeNode* root) {
+	vector<int> ivec;
+	if (NULL == root)
+		return ivec;
+	Help_postTraversal(root, ivec);
 	return ivec;
+}
+
+Node *detectCycle(Node *head){
+	Node* first = head;
+	Node* second = head;
+	bool isCycle = false;
+	while (first != NULL && second != NULL)
+	{
+		first = first->next;
+		if (second->next != NULL) {
+			second = second->next->next;
+		}
+		else {
+			return NULL;
+		}
+		if (first == second) {
+			isCycle = true;
+			break;
+		}
+	}
+	if (isCycle == false)
+		return NULL;
+	second = head;
+	while (first != second)
+	{
+		first = first->next;
+		second = second->next;
+	}
+	return first;
 }
 
 int main()
