@@ -151,7 +151,7 @@ string countAndSay(int n) {
 		if (lastStr[i] == lastStr[i + 1]) {
 			++sameNum;		
 			if (i == (lastStr.size() - 2)) {
-				sprintf(numStr, "%d", sameNum);
+				sprintf_s(numStr, "%d", sameNum);
 				//_itoa_s(sameNum, numStr, 10);
 				resStr += numStr;
 				resStr += lastStr[i];
@@ -159,7 +159,7 @@ string countAndSay(int n) {
 		}
 		else
 		{
-			sprintf(numStr, "%d", sameNum);
+			sprintf_s(numStr, "%d", sameNum);
 			resStr += numStr;
 			resStr += lastStr[i];
 			sameNum = 1;
@@ -1098,8 +1098,6 @@ vector<int> preorderTraversal(TreeNode* root) {
 	vector<int> ivec;
 	if (NULL != root)
 		ivec.push_back(root->val);
-	else
-		return ivec;
 	if(root->lchild != NULL)
 		preorderTraversal(root->lchild);
 	if (root->rchild != NULL)
@@ -1107,77 +1105,340 @@ vector<int> preorderTraversal(TreeNode* root) {
 	return ivec;
 }
 
-void Help_postTraversal(TreeNode* root, vector<int> &ivec) {
-	if (root->lchild != NULL) {
-		Help_postTraversal(root->lchild, ivec);
-	}
-	if (root->rchild != NULL) {
-		Help_postTraversal(root->rchild, ivec);
-	}
-	if (root != NULL)
-		ivec.push_back(root->val);
-}
-
 vector<int> postorderTraversal(TreeNode* root) {
 	vector<int> ivec;
-	if (NULL == root)
-		return ivec;
-	Help_postTraversal(root, ivec);
+	if (root->lchild != NULL)
+		preorderTraversal(root->lchild);
+	if (root->rchild != NULL)
+		preorderTraversal(root->rchild);
+	if (NULL != root)
+		ivec.push_back(root->val);
 	return ivec;
 }
 
-Node *detectCycle(Node *head){
-	Node* first = head;
-	Node* second = head;
-	bool isCycle = false;
-	while (first != NULL && second != NULL)
+void rightSideView_Help(TreeNode* root, vector<int> &res, int level) {
+	if (NULL == root) {
+		return;
+	}
+	if (res.size() == level)
+		res.push_back(root->val);
+	rightSideView_Help(root->rchild, res, level + 1);
+	rightSideView_Help(root->lchild, res, level + 1);
+}
+
+vector<int> rightSideView(TreeNode* root) {
+	vector<int> res;
+	rightSideView_Help(root, res, 0);
+	return res;
+}
+
+void numIslands_help(vector<vector<char>>& grid, int i, int j) {
+	if (i < 0 || j < 0 || i >=grid.size() || j >= grid[0].size() || grid[i][j] =='0') return;
+	grid[i][j] = '0';
+	numIslands_help(grid, i + 1, j);
+	numIslands_help(grid, i, j + 1);
+	numIslands_help(grid, i - 1, j);
+	numIslands_help(grid, i, j - 1);
+}
+
+int numIslands(vector<vector<char>>& grid) {
+	int lineLen = grid.size();
+	if (lineLen == 0)  return 0;
+	int colSize = grid[0].size();
+	int goalNum = 0;
+	for (int i = 0; i < lineLen; i++) {
+		for (int j = 0; j < colSize; j++) {
+			if (grid[i][j] == '1') {
+				numIslands_help(grid, i, j);
+				++goalNum;
+			}
+		}
+	}
+	return goalNum;
+}
+
+string convertToTitle(int n) {
+	string res;
+	while (n)
 	{
-		first = first->next;
-		if (second->next != NULL) {
-			second = second->next->next;
+		int tmp = n % 26;
+		if (0 == tmp) {
+			tmp = 25;
+			n /= 26;
+			--n;
 		}
 		else {
-			return NULL;
+			--tmp;
+			n /= 26;
+		}			
+		
+		res += ('A' + tmp);
+	}
+	reverse(res.begin(), res.end());
+	return res;
+}
+
+vector<int> twoSum(vector<int>& numbers, int target) {
+	vector<int> ivec;
+	int VecLen = numbers.size();
+	for (int i = 0; i < VecLen; i++) {
+		for (int j = i + 1; j < VecLen; j++) {
+			if ((numbers[i] + numbers[j]) == target) {
+				ivec.push_back(i + 1);
+				ivec.push_back(j + 1);
+				break;
+			}else if ((numbers[i] + numbers[j]) > target) {
+				break;
+			}	
 		}
-		if (first == second) {
-			isCycle = true;
+	}
+	return ivec;
+}
+
+#include <queue>
+#define N 5
+int maze[N][N] = {
+	{ 0, 1, 1, 0, 0 },
+{ 0, 0, 1, 1, 0 },
+{ 0, 1, 1, 1, 0 },
+{ 1, 0, 0, 0, 0 },
+{ 0, 0, 1, 1, 0 }
+};
+int visited[N + 1] = { 0, };
+void BFS(int start)
+{
+	queue<int> Q;
+	Q.push(start);
+	visited[start] = 1;
+	while (!Q.empty())
+	{
+		int front = Q.front();
+		cout << front << " ";
+		Q.pop();
+		for (int i = 1; i <= N; i++)
+		{
+			if (!visited[i] && maze[front - 1][i - 1] == 1)
+			{
+				visited[i] = 1;
+				Q.push(i);
+			}
+		}
+	}
+}
+
+#include <stdio.h>
+#define MAX_VERtEX_NUM 20                   //顶点的最大个数
+#define VRType int                          //表示顶点之间的关系的变量类型
+#define InfoType char                       //存储弧或者边额外信息的指针变量类型
+#define VertexType int                      //图中顶点的数据类型
+typedef enum { DG, DN, UDG, UDN }GraphKind;       //枚举图的 4 种类型
+typedef struct {
+	VRType adj;                             //对于无权图，用 1 或 0 表示是否相邻；对于带权图，直接为权值。
+	InfoType * info;                        //弧或边额外含有的信息指针
+}ArcCell, AdjMatrix[MAX_VERtEX_NUM][MAX_VERtEX_NUM];
+typedef struct {
+	VertexType vexs[MAX_VERtEX_NUM];        //存储图中顶点数据
+	AdjMatrix arcs;                         //二维数组，记录顶点之间的关系
+	int vexnum, arcnum;                      //记录图的顶点数和弧（边）数
+	GraphKind kind;                         //记录图的种类
+}MGraph;
+//根据顶点本身数据，判断出顶点在二维数组中的位置
+int LocateVex(MGraph * G, VertexType v) {
+	int i = 0;
+	//遍历一维数组，找到变量v
+	for (; i<G->vexnum; i++) {
+		if (G->vexs[i] == v) {
 			break;
 		}
 	}
-	if (isCycle == false)
-		return NULL;
-	second = head;
-	while (first != second)
-	{
-		first = first->next;
-		second = second->next;
+	//如果找不到，输出提示语句，返回-1
+	if (i>G->vexnum) {
+		printf("no such vertex.\n");
+		return -1;
 	}
-	return first;
+	return i;
 }
-
-int main()
-{
-	//float s = 1.0f, x, y; 
-	//for (y = -18; y < 18; y += 1.0f / s, putchar('\n'))
-	//	for (x = -18; x < 18; x += 0.5f / s) 
-	TreeNode *root;
-	CreateTree(root);
-	vector<int> ivec = postorderTraversal(root);
-	for (vector<int>::iterator it = ivec.begin(); it != ivec.end(); it++) {
-		cout << *it << "  ";
+//构造有向图
+void CreateDG(MGraph *G) {
+	//输入图含有的顶点数和弧的个数
+	cin >> G->vexnum >> G->arcnum;
+	//scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	//依次输入顶点本身的数据
+	for (int i = 0; i<G->vexnum; i++) {
+		cin >> G->vexs[i];
+		//scanf("%d", &(G->vexs[i]));
 	}
-	//PrintTree(root);
+	//初始化二维矩阵，全部归0，指针指向NULL
+	for (int i = 0; i<G->vexnum; i++) {
+		for (int j = 0; j<G->vexnum; j++) {
+			G->arcs[i][j].adj = 0;
+			G->arcs[i][j].info = NULL;
+		}
+	}
+	//在二维数组中添加弧的数据
+	for (int i = 0; i<G->arcnum; i++) {
+		int v1, v2;
+		//输入弧头和弧尾
+		cin >> v1 >> v2;
+		//scanf("%d,%d", &v1, &v2);
+		//确定顶点位置
+		int n = LocateVex(G, v1);
+		int m = LocateVex(G, v2);
+		//排除错误数据
+		if (m == -1 || n == -1) {
+			printf("no this vertex\n");
+			return;
+		}
+		//将正确的弧的数据加入二维数组
+		G->arcs[n][m].adj = 1;
+	}
+}
+//构造无向图
+void CreateDN(MGraph *G) {
+	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	for (int i = 0; i<G->vexnum; i++) {
+		scanf("%d", &(G->vexs[i]));
+	}
+	for (int i = 0; i<G->vexnum; i++) {
+		for (int j = 0; j<G->vexnum; j++) {
+			G->arcs[i][j].adj = 0;
+			G->arcs[i][j].info = NULL;
+		}
+	}
+	for (int i = 0; i<G->arcnum; i++) {
+		int v1, v2;
+		scanf("%d,%d", &v1, &v2);
+		int n = LocateVex(G, v1);
+		int m = LocateVex(G, v2);
+		if (m == -1 || n == -1) {
+			printf("no this vertex\n");
+			return;
+		}
+		G->arcs[n][m].adj = 1;
+		G->arcs[m][n].adj = 1;//无向图的二阶矩阵沿主对角线对称
+	}
+}
+//构造有向网，和有向图不同的是二阶矩阵中存储的是权值。
+void CreateUDG(MGraph *G) {
+	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	for (int i = 0; i<G->vexnum; i++) {
+		scanf("%d", &(G->vexs[i]));
+	}
+	for (int i = 0; i<G->vexnum; i++) {
+		for (int j = 0; j<G->vexnum; j++) {
+			G->arcs[i][j].adj = 0;
+			G->arcs[i][j].info = NULL;
+		}
+	}
+	for (int i = 0; i<G->arcnum; i++) {
+		int v1, v2, w;
+		scanf("%d,%d,%d", &v1, &v2, &w);
+		int n = LocateVex(G, v1);
+		int m = LocateVex(G, v2);
+		if (m == -1 || n == -1) {
+			printf("no this vertex\n");
+			return;
+		}
+		G->arcs[n][m].adj = w;
+	}
+}
+//构造无向网。和无向图唯一的区别就是二阶矩阵中存储的是权值
+void CreateUDN(MGraph* G) {
+	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	for (int i = 0; i<G->vexnum; i++) {
+		scanf("%d", &(G->vexs[i]));
+	}
+	for (int i = 0; i<G->vexnum; i++) {
+		for (int j = 0; j<G->vexnum; j++) {
+			G->arcs[i][j].adj = 0;
+			G->arcs[i][j].info = NULL;
+		}
+	}
+	for (int i = 0; i<G->arcnum; i++) {
+		int v1, v2, w;
+		scanf("%d,%d,%d", &v1, &v2, &w);
+		int m = LocateVex(G, v1);
+		int n = LocateVex(G, v2);
+		if (m == -1 || n == -1) {
+			printf("no this vertex\n");
+			return;
+		}
+		G->arcs[n][m].adj = w;
+		G->arcs[m][n].adj = w;//矩阵对称
+	}
+}
+void CreateGraph(MGraph *G) {
+	//选择图的类型
+	scanf("%d", &(G->kind));
+	//根据所选类型，调用不同的函数实现构造图的功能
+	switch (G->kind) {
+	case DG:
+		return CreateDG(G);
+		break;
+	case DN:
+		return CreateDN(G);
+		break;
+	case UDG:
+		return CreateUDG(G);
+		break;
+	case UDN:
+		return CreateUDN(G);
+		break;
+	default:
+		break;
+	}
+}
+//输出函数
+void PrintGrapth(MGraph G)
+{
+	for (int i = 0; i < G.vexnum; i++)
+	{
+		for (int j = 0; j < G.vexnum; j++)
+		{
+			printf("%d ", G.arcs[i][j].adj);
+		}
+		printf("\n");
+	}
+}
+int main() {
+	/*int a = 0, b = 0, c = 0, d = 0; 
+	scanf("%d", &c);
+	scanf("%d  %d", &a, &b);
+	scanf("%d", &d);
+	cout << a << endl;
+	cout << b << endl;
+	cout << c << endl;
+	cout << d << endl;
+	getchar();
+	getchar();
+	return 0;*/
+	MGraph G;//建立一个图的变量
+	CreateGraph(&G);//调用创建函数，传入地址参数
+	PrintGrapth(G);//输出图的二阶矩阵
+	getchar();
+	getchar();
+	return 0;
+}
+int main_v()
+{
+	for (int i = 1; i <= N; i++)
+	{
+		if (visited[i] == 1)
+			continue;
+		BFS(i);
+	}
 	system("pause");
 	return 0;
 }
 
-
-//int main() {
-//	/*TreeNode* T;
-//	CreateTree(T);
-//	zigzagLevelOrder(T);
-//	PrintTree(T);*/
-//	cout << numDistinct("baaag", "bad");
-//	system("pause");
-//	return 0;
-//}
+/*int main()
+{
+	vector<int> ivec{ 2,7,11,15 };
+	twoSum(ivec, 9);
+	TreeNode *root;
+	CreateTree(root);
+	vector<int> res= rightSideView(root);
+	//PrintTree(root);
+	system("pause");
+	return 0;
+}*/
