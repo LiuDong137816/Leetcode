@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <set>
 #include <map>
+#include <queue>
+#include <stdio.h>
 using namespace std;
 
 typedef struct Node Node;
@@ -1195,38 +1197,6 @@ vector<int> twoSum(vector<int>& numbers, int target) {
 	return ivec;
 }
 
-#include <queue>
-#define N 5
-int maze[N][N] = {
-	{ 0, 1, 1, 0, 0 },
-{ 0, 0, 1, 1, 0 },
-{ 0, 1, 1, 1, 0 },
-{ 1, 0, 0, 0, 0 },
-{ 0, 0, 1, 1, 0 }
-};
-int visited[N + 1] = { 0, };
-void BFS(int start)
-{
-	queue<int> Q;
-	Q.push(start);
-	visited[start] = 1;
-	while (!Q.empty())
-	{
-		int front = Q.front();
-		cout << front << " ";
-		Q.pop();
-		for (int i = 1; i <= N; i++)
-		{
-			if (!visited[i] && maze[front - 1][i - 1] == 1)
-			{
-				visited[i] = 1;
-				Q.push(i);
-			}
-		}
-	}
-}
-
-#include <stdio.h>
 #define MAX_VERtEX_NUM 20                   //顶点的最大个数
 #define VRType int                          //表示顶点之间的关系的变量类型
 #define InfoType char                       //存储弧或者边额外信息的指针变量类型
@@ -1295,9 +1265,9 @@ void CreateDG(MGraph *G) {
 }
 //构造无向图
 void CreateDN(MGraph *G) {
-	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	scanf_s("%d,%d", &(G->vexnum), &(G->arcnum));
 	for (int i = 0; i<G->vexnum; i++) {
-		scanf("%d", &(G->vexs[i]));
+		scanf_s("%d", &(G->vexs[i]));
 	}
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
@@ -1307,7 +1277,7 @@ void CreateDN(MGraph *G) {
 	}
 	for (int i = 0; i<G->arcnum; i++) {
 		int v1, v2;
-		scanf("%d,%d", &v1, &v2);
+		scanf_s("%d,%d", &v1, &v2);
 		int n = LocateVex(G, v1);
 		int m = LocateVex(G, v2);
 		if (m == -1 || n == -1) {
@@ -1320,9 +1290,9 @@ void CreateDN(MGraph *G) {
 }
 //构造有向网，和有向图不同的是二阶矩阵中存储的是权值。
 void CreateUDG(MGraph *G) {
-	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	scanf_s("%d,%d", &(G->vexnum), &(G->arcnum));
 	for (int i = 0; i<G->vexnum; i++) {
-		scanf("%d", &(G->vexs[i]));
+		scanf_s("%d", &(G->vexs[i]));
 	}
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
@@ -1332,7 +1302,7 @@ void CreateUDG(MGraph *G) {
 	}
 	for (int i = 0; i<G->arcnum; i++) {
 		int v1, v2, w;
-		scanf("%d,%d,%d", &v1, &v2, &w);
+		scanf_s("%d,%d,%d", &v1, &v2, &w);
 		int n = LocateVex(G, v1);
 		int m = LocateVex(G, v2);
 		if (m == -1 || n == -1) {
@@ -1344,9 +1314,9 @@ void CreateUDG(MGraph *G) {
 }
 //构造无向网。和无向图唯一的区别就是二阶矩阵中存储的是权值
 void CreateUDN(MGraph* G) {
-	scanf("%d,%d", &(G->vexnum), &(G->arcnum));
+	scanf_s("%d,%d", &(G->vexnum), &(G->arcnum));
 	for (int i = 0; i<G->vexnum; i++) {
-		scanf("%d", &(G->vexs[i]));
+		scanf_s("%d", &(G->vexs[i]));
 	}
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
@@ -1356,7 +1326,7 @@ void CreateUDN(MGraph* G) {
 	}
 	for (int i = 0; i<G->arcnum; i++) {
 		int v1, v2, w;
-		scanf("%d,%d,%d", &v1, &v2, &w);
+		scanf_s("%d,%d,%d", &v1, &v2, &w);
 		int m = LocateVex(G, v1);
 		int n = LocateVex(G, v2);
 		if (m == -1 || n == -1) {
@@ -1369,7 +1339,7 @@ void CreateUDN(MGraph* G) {
 }
 void CreateGraph(MGraph *G) {
 	//选择图的类型
-	scanf("%d", &(G->kind));
+	scanf_s("%d", &(G->kind));
 	//根据所选类型，调用不同的函数实现构造图的功能
 	switch (G->kind) {
 	case DG:
@@ -1400,18 +1370,7 @@ void PrintGrapth(MGraph G)
 		printf("\n");
 	}
 }
-int main() {
-	/*int a = 0, b = 0, c = 0, d = 0; 
-	scanf("%d", &c);
-	scanf("%d  %d", &a, &b);
-	scanf("%d", &d);
-	cout << a << endl;
-	cout << b << endl;
-	cout << c << endl;
-	cout << d << endl;
-	getchar();
-	getchar();
-	return 0;*/
+int main_2() {
 	MGraph G;//建立一个图的变量
 	CreateGraph(&G);//调用创建函数，传入地址参数
 	PrintGrapth(G);//输出图的二阶矩阵
@@ -1419,19 +1378,8 @@ int main() {
 	getchar();
 	return 0;
 }
-int main_v()
-{
-	for (int i = 1; i <= N; i++)
-	{
-		if (visited[i] == 1)
-			continue;
-		BFS(i);
-	}
-	system("pause");
-	return 0;
-}
 
-/*int main()
+int main_1()
 {
 	vector<int> ivec{ 2,7,11,15 };
 	twoSum(ivec, 9);
@@ -1441,4 +1389,47 @@ int main_v()
 	//PrintTree(root);
 	system("pause");
 	return 0;
-}*/
+}
+#define N 5
+int maze[N][N] = {
+{ 0, 1, 1, 0, 0 },
+{ 0, 0, 1, 1, 0 },
+{ 0, 1, 1, 1, 0 },
+{ 1, 0, 0, 0, 0 },
+{ 0, 0, 1, 1, 0 }
+};
+int visited[N + 1] = { 0, };
+void BFS(int start)
+{
+	queue<int> Q;
+	Q.push(start);
+	visited[start] = 1;
+	while (!Q.empty())
+	{
+		int front = Q.front();
+		cout << front << " ";
+		Q.pop();
+		for (int i = 1; i <= N; i++)
+		{
+			if (!visited[i] && maze[front - 1][i - 1] == 1)
+			{
+				visited[i] = 1;
+				Q.push(i);
+			}
+		}
+	}
+}
+
+int main() {
+	BFS(1);
+	getchar();
+	return 0;
+	for (int i = 1; i <= N; i++)
+	{
+		if (visited[i] == 1)
+			continue;
+		BFS(i);
+	}
+	getchar();
+	return 0;
+}
