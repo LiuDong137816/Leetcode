@@ -7,81 +7,11 @@
 #include <map>
 #include <queue>
 #include <stdio.h>
+#include <fstream>  
+#include <algorithm>
+#include "LeetCode.h"
+
 using namespace std;
-
-typedef struct Node Node;
-struct Node
-{
-	int data;//数据域
-    struct Node* next;//指针域
-	Node(int x) : data(x), next(NULL) {}
-};
-
-Node*Create()
-{
-	int n = 0;
-	Node*head, *p1, *p2;
-	p1 = p2 = new Node(0);
-	//p1 = p2 = new Node;
-	cin >> p1->data;
-	head = NULL;
-	while (p1->data != 0)
-	{
-		if (n == 0)
-		{
-			head = p1;
-		}
-		else
-			p2->next = p1;
-		p2 = p1;
-		//p1 = new Node;
-		p1 = new Node(0);
-		cin >> p1->data;
-		n++;
-	}
-	p2->next = NULL;
-	return head;
-}
-
-Node* reverseBetween(Node* head, int m, int n) {
-	Node *tmpNode = head;
-	vector<int> ivec;
-	for (int i = 1; i < m; i++) {
-		tmpNode = tmpNode->next;
-	}
-	Node* tmpNode2 = tmpNode;
-	for (int j = m; j <= n; j++) {
-		ivec.push_back(tmpNode->data);
-		tmpNode = tmpNode->next;
-	}
-	for (int k = n - m; k >= 0; k--) {
-		tmpNode2->data = ivec[k];
-		tmpNode2 = tmpNode2->next;
-	}
-	return head;
-}
-
-void insert(Node* head, int p, int x)
-{
-	Node* tmp = head;//for循环是为了防止插入位置超出了链表长度
-	for (int i = 0; i < p; i++)
-	{
-		if (tmp == NULL)
-			return;
-		if (i < p - 1)
-			tmp = tmp->next;
-	}
-	Node* tmp2 = new Node(0);
-	tmp2->data = x;
-	tmp2->next = tmp->next;
-	tmp->next = tmp2;
-}
-
-void PrintList(Node* listNode) {
-	for (; listNode != NULL; listNode = listNode->next) {
-		cout << listNode->data << " ";
-	}
-}
 
 string CommonPrefix(string& commom, string& str) {
 	string tempStr;
@@ -174,27 +104,6 @@ string countAndSay(int n) {
 	return resStr;
 }
 
-//Node* reverseList(Node* head) {
-//	stack<int> stk;
-//	if (head == NULL)
-//		return NULL;
-//	while (NULL != head) {
-//		stk.push(head->data);
-//		head = head->next;
-//	}
-//	Node* head1 = new Node(stk.top());
-//	Node* p1 = head1;
-//	Node* p2 = head1;
-//	stk.pop();
-//	while (!stk.empty()) {
-//		p1 = new Node(stk.top());
-//		p2->next = p1;
-//		p2 = p1;
-//		stk.pop();
-//	}
-//	return head1;
-//}
-
 int lengthOfLastWord(string s) {
 	if (s.size() == 0)
 		return 0;
@@ -232,23 +141,6 @@ void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
 	}
 }
 
-Node* deleteDuplicates(Node* head) {
-	if (head == NULL || head->next == NULL)
-		return head;
-	Node* res = head;
-	Node* p = head;
-	while (p->next != NULL) {
-		if (p->data == p->next->data) {
-			p->next = p->next->next;
-			continue;
-		}
-		p = p->next;
-	}
-	return res;
-}
-
-#include <fstream>  
-#include <algorithm>
 int maxSubArray(vector<int>& nums) {
 	int len = nums.size();
 	int ans = nums[0], sum = 0;
@@ -927,24 +819,7 @@ bool isIsomorphic(string s, string t) {
 	return true;
 }
 
-Node* reverseList(Node* head) {
-	stack<int> stk;
-	while (head)
-	{
-		stk.push(head->data);
-		head = head->next;
-	}
-	Node* res = new Node(0);
-	Node* CurNode = res;
-	while (!stk.empty())
-	{
-		Node* tmpNode = new Node(stk.top());
-		stk.pop();
-		CurNode->next = tmpNode;
-		CurNode = CurNode->next;	
-	}
-	return res->next;
-}
+
 
 int rangeBitwiseAnd(int m, int n) {
 	if (m == n)
