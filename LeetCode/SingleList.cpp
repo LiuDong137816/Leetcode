@@ -1,6 +1,6 @@
 ﻿#include <vector>
 #include <stack>
-#include "LeetCode.h"
+#include "SingleList.h"
 
 namespace Solution{
 	
@@ -26,7 +26,7 @@ namespace Solution{
 			std::cin >> p1->data;
 			n++;
 		}
-		p2->next = nullptrptr;
+		p2->next = nullptr;
 		return head;
 	}
 

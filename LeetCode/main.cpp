@@ -6,47 +6,11 @@
 #include <set>
 #include <map>
 #include <queue>
-#include <stdio.h>
 #include <fstream>  
 #include <algorithm>
-#include "LeetCode.h"
+#include "SingleList.h"
 
 using namespace std;
-
-string CommonPrefix(string& commom, string& str) {
-	string tempStr;
-	int strlength = commom.length() > str.length() ? str.length() : commom.length();
-	for (int i = 0; i < strlength; i++) {
-		if (commom[i] == str[i]) {
-			tempStr += commom[i];
-		}
-		else
-			break;
-	}
-	return tempStr;
-}
-
-string longestCommonPrefix(vector<string>& strs) {
-	string tempStr;
-	
-	if (strs.size() == 0)
-		return tempStr;
-	if (strs.size() == 1)
-		return strs[0];
-	int strlength = strs[0].length() > strs[1].length() ? strs[1].length():strs[0].length();
-	for (int i = 0; i < strlength; i++) {
-		if (strs[0][i] == strs[1][i]) {
-			tempStr += strs[0][i];
-		}
-		else
-			break;
-	}
-	for (vector<string>::iterator it1 = strs.begin() + 2; it1 != strs.end(); it1++)
-	{
-		tempStr = CommonPrefix(tempStr, *it1);
-	}
-	return tempStr;
-}
 
 int searchInsert(vector<int>& nums, int target) {
 	int flag1 = 0;
@@ -62,55 +26,6 @@ int searchInsert(vector<int>& nums, int target) {
 		}
 	}
 	return nums.end() - nums.begin();
-}
-
-string countAndSay(int n) {
-	string resStr;
-	string lastStr;
-	if (1 == n) {
-		resStr = "1";
-		return resStr;
-	}
-	if (2 == n) {
-		resStr = "11";
-		return resStr;
-	}
-	lastStr = countAndSay(n - 1);
-	int sameNum = 1;
-	char numStr[10] = { 0 };
-	for (int i = 0; i < lastStr.size() - 1; i++) {
-		memset(numStr, 0, sizeof(numStr));
-		if (lastStr[i] == lastStr[i + 1]) {
-			++sameNum;		
-			if (i == (lastStr.size() - 2)) {
-				sprintf_s(numStr, "%d", sameNum);
-				//_itoa_s(sameNum, numStr, 10);
-				resStr += numStr;
-				resStr += lastStr[i];
-			}
-		}
-		else
-		{
-			sprintf_s(numStr, "%d", sameNum);
-			resStr += numStr;
-			resStr += lastStr[i];
-			sameNum = 1;
-			if (i == (lastStr.size() - 2)) {
-				resStr += "1";
-				resStr += lastStr[i + 1];
-			}
-		}
-	}
-	return resStr;
-}
-
-int lengthOfLastWord(string s) {
-	if (s.size() == 0)
-		return 0;
-	int StrNum = s.find_last_of(" ");
-	if (StrNum == s.size())
-		return StrNum;
-	return s.size() - StrNum -1;
 }
 
 void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
@@ -231,29 +146,6 @@ void setZeroes(vector<vector<int>>& matrix) {
 	}
 }
 
-string convert(string s, int numRows){
-	vector<string> res(numRows, "");
-	string stres;
-	int len = s.length();
-	if (len <= numRows)
-		return s;
-	int row = 0, step = 0;
-	for (int i = 0; i < len; i++) {
-		res[row].push_back(s[i]);
-		if (row == 0) {
-			step = 1;
-		}
-		else if(row == (numRows - 1)){
-			step = -1;
-		}
-		row += step;
-	}
-	for (int j = 0; j < numRows; j++) {
-		stres += res[j];
-	}
-	return stres;
-}
-
 int reverse(int x) {
 	long long res = 0;
 	while (x)
@@ -266,30 +158,6 @@ int reverse(int x) {
 	if ((res > 2147483647) || (res < -2147483647))
 		return 0;
 	return (int)res;
-}
-
-string longestPalindrome(string s) {
-	int len = s.length();
-	int min_start = 0, max_len = 0;
-	for (int i = 0; i < len;) {
-		if(len - i < max_len/2) break;
-		int k = i, j = i;
-		while (s[i] == s[k + 1])
-		{
-			++k;
-		}
-		i = k + 1;
-		while (k < s.size()-1 && j > 0 && s[k+1] == s[j-1])
-		{
-			++k; --j;
-		}
-		int new_len = k - j + 1;
-		if (new_len > max_len) {
-			min_start = j;
-			max_len = new_len;
-		}
-	}
-	return s.substr(min_start, max_len);
 }
 
 bool isPalindrome(int x) {
@@ -360,11 +228,6 @@ int threeSumClosest(vector<int>& nums, int target) {
 	}
 	return goalTar + target;
 }
-
-//vector<int> findSubstring(string s, vector<string>& words) {
-//	vector<int> ivec;
-//	return ivec;
-//}
 
 vector<int> findSubstring(string s, vector<string>& words) {
 	unordered_map<string, int> counts;
@@ -491,39 +354,6 @@ void nextPermutation(vector<int>& nums) {
 	reverse(nums.begin()+ k + 1, nums.end());
 }
 
-int longestValidParentheses(string s) {
-	int n = s.length(), longest = 0;
-	stack<int> stc;
-	for (int i = 0; i < n; i++) {
-		if (s[i] == '(')
-			stc.push(i);
-		else {
-			if (!stc.empty()) {
-				if (s[stc.top()] == '(') stc.pop();
-				else{
-					stc.push(i);
-				}
-			}
-			else {
-				stc.push(i);
-			}
-		}
-	}
-	if (stc.empty()) 
-		return n;
-	else {
-		int a = n, b = 0;
-		while (!stc.empty())
-		{
-			b = stc.top(); stc.pop();
-			longest = max(longest, a - b - 1);
-			a = b;
-		}
-		longest = max(longest, a);
-	}
-	return longest;
-}
-
 int trap(vector<int>& height) {
 	int res = 0;
 	int left = 0, right = height.size()-1;
@@ -541,24 +371,6 @@ int trap(vector<int>& height) {
 		}
 	}
 	return res;
-}
-
-string multiply(string num1, string num2) {
-	string res(num1.size() + num2.size(), '0');
-	for (int i = num1.size() - 1; i >= 0; i--) {
-		int hignIndex = 0;
-		for (int j = num2.size() - 1; j >= 0; j--) {
-			int tmp = (num1[i] - '0')*(num2[j] - '0') + hignIndex + (res[i+j+1]-'0');
-			res[i + j + 1] = tmp % 10 + '0';
-			hignIndex = tmp/10;
-		}
-		res[i] += hignIndex;
-	}
-	size_t startPos = res.find_first_not_of("0");
-	if (startPos != string::npos) {
-		return res.substr(startPos);
-	}
-	return "0";
 }
 
 void combinationTarget(vector<int>& candidates, vector<vector<int>>& res, vector<int> &OneElement, int target, int start) {
@@ -648,36 +460,18 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
 	return sres;
 }
 
-//struct BiTNode {
-//	char data;
-//	struct BiTNode* lchild, *rchild; // 左右孩子
-//};
-//void CreatBiTree(BiTNode* &T) { // 先序递归创建二叉树
-//								// 先按顺序驶入二叉树中节点的值(一个字符),空格字符代表空树
-//	char ch;
-//	cin >> ch;
-//	if (ch == '#') // getchar() 为逐个读入标准库函数
-//		T = NULL;
-//	else {
-//		T = new BiTNode; // 产生新的子树
-//		T->data = ch; // 由getchar()逐个读进来
-//		CreatBiTree(T->lchild); // 递归创建左子树
-//		CreatBiTree(T->rchild); // 递归创建右子树
-//	}
-//}
-
 typedef struct BiTNode {
 	int val;
 	BiTNode *lchild;
 	BiTNode *rchild;
-	BiTNode(int x) : val(x), lchild(NULL), rchild(NULL) {}
+	BiTNode(int x) : val(x), lchild(nullptr), rchild(nullptr) {}
 }TreeNode;
 
 void CreateTree(TreeNode* &T){
 	int val;
 	cin >> val;
 	if (val == 0) {
-		T = NULL;
+		T = nullptr;
 	}
 	else {
 		T = new TreeNode(val);
@@ -687,8 +481,8 @@ void CreateTree(TreeNode* &T){
 }
 
 void PrintTree(BiTNode *T) {
-	if (T == NULL) {
-		cout << " NULL ";
+	if (T == nullptr) {
+		cout << " nullptr ";
 	}
 	else {
 		cout << T->val<< " ";
@@ -698,13 +492,13 @@ void PrintTree(BiTNode *T) {
 }
 
 //bool isSymmetric(TreeNode* root) {
-//	if (root == NULL)
+//	if (root == nullptr)
 //		return true;
-//	if (root->left != NULL && root->right == NULL)
+//	if (root->left != nullptr && root->right == nullptr)
 //		return false;
-//	else if (root->left == NULL && root->right != NULL) {
+//	else if (root->left == nullptr && root->right != nullptr) {
 //		return false;
-//	}else if (root->left == NULL && root->right == NULL) {
+//	}else if (root->left == nullptr && root->right == nullptr) {
 //		return true;
 //	}
 //	else {
@@ -845,7 +639,7 @@ int countPrimes(int n) {
 
 vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 	vector<vector<int>> ires;
-	if (root == NULL)
+	if (root == nullptr)
 		return ires;
 	vector<int> ivec;
 	vector<TreeNode*> Tvec{root};
@@ -858,15 +652,15 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 		for (vector<TreeNode*>::reverse_iterator it = Tmpvec.rbegin(); it != Tmpvec.rend(); it++) {
 			ivec.push_back((*it)->val);
 			if (i % 2 == 1) {
-				if ((*it)->lchild != NULL)
+				if ((*it)->lchild != nullptr)
 					Tvec.push_back((*it)->lchild);
-				if ((*it)->rchild != NULL)
+				if ((*it)->rchild != nullptr)
 					Tvec.push_back((*it)->rchild);
 			}
 			else {
-				if ((*it)->rchild != NULL)
+				if ((*it)->rchild != nullptr)
 					Tvec.push_back((*it)->rchild);
-				if ((*it)->lchild != NULL)
+				if ((*it)->lchild != nullptr)
 					Tvec.push_back((*it)->lchild);
 			}
 		}
@@ -879,12 +673,12 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 struct TreeLinkNode {
 	int val;
 	TreeLinkNode *left, *right, *next;
-	TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+	TreeLinkNode(int x) : val(x), left(nullptr), right(nullptr), next(nullptr) {}
 };
 void connect(TreeLinkNode *root) {
-	if (NULL == root)  return;
+	if (nullptr == root)  return;
 	TreeLinkNode* pre = root;
-	TreeLinkNode* cur = NULL;
+	TreeLinkNode* cur = nullptr;
 	while (pre->left)
 	{
 		cur = pre;
@@ -899,17 +693,17 @@ void connect(TreeLinkNode *root) {
 }
 
 void connect1(TreeLinkNode *root) {
-	while (root != NULL)
+	while (root != nullptr)
 	{
 		TreeLinkNode* tmpNode = new TreeLinkNode(0);
 		TreeLinkNode* currNode = tmpNode;
-		while (root != NULL)
+		while (root != nullptr)
 		{
-			if (root->left != NULL) {
+			if (root->left != nullptr) {
 				currNode->next = root->left;
 				currNode = currNode->next;
 			}
-			if (root->right != NULL) {
+			if (root->right != nullptr) {
 				currNode->next = root->right;
 				currNode = currNode->next;
 			}
@@ -973,28 +767,28 @@ int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
 
 vector<int> preorderTraversal(TreeNode* root) {
 	vector<int> ivec;
-	if (NULL != root)
+	if (nullptr != root)
 		ivec.push_back(root->val);
-	if(root->lchild != NULL)
+	if(root->lchild != nullptr)
 		preorderTraversal(root->lchild);
-	if (root->rchild != NULL)
+	if (root->rchild != nullptr)
 		preorderTraversal(root->rchild);
 	return ivec;
 }
 
 vector<int> postorderTraversal(TreeNode* root) {
 	vector<int> ivec;
-	if (root->lchild != NULL)
+	if (root->lchild != nullptr)
 		preorderTraversal(root->lchild);
-	if (root->rchild != NULL)
+	if (root->rchild != nullptr)
 		preorderTraversal(root->rchild);
-	if (NULL != root)
+	if (nullptr != root)
 		ivec.push_back(root->val);
 	return ivec;
 }
 
 void rightSideView_Help(TreeNode* root, vector<int> &res, int level) {
-	if (NULL == root) {
+	if (nullptr == root) {
 		return;
 	}
 	if (res.size() == level)
@@ -1113,11 +907,11 @@ void CreateDG(MGraph *G) {
 		cin >> G->vexs[i];
 		//scanf("%d", &(G->vexs[i]));
 	}
-	//初始化二维矩阵，全部归0，指针指向NULL
+	//初始化二维矩阵，全部归0，指针指向nullptr
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
 			G->arcs[i][j].adj = 0;
-			G->arcs[i][j].info = NULL;
+			G->arcs[i][j].info = nullptr;
 		}
 	}
 	//在二维数组中添加弧的数据
@@ -1147,7 +941,7 @@ void CreateDN(MGraph *G) {
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
 			G->arcs[i][j].adj = 0;
-			G->arcs[i][j].info = NULL;
+			G->arcs[i][j].info = nullptr;
 		}
 	}
 	for (int i = 0; i<G->arcnum; i++) {
@@ -1172,7 +966,7 @@ void CreateUDG(MGraph *G) {
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
 			G->arcs[i][j].adj = 0;
-			G->arcs[i][j].info = NULL;
+			G->arcs[i][j].info = nullptr;
 		}
 	}
 	for (int i = 0; i<G->arcnum; i++) {
@@ -1196,7 +990,7 @@ void CreateUDN(MGraph* G) {
 	for (int i = 0; i<G->vexnum; i++) {
 		for (int j = 0; j<G->vexnum; j++) {
 			G->arcs[i][j].adj = 0;
-			G->arcs[i][j].info = NULL;
+			G->arcs[i][j].info = nullptr;
 		}
 	}
 	for (int i = 0; i<G->arcnum; i++) {

@@ -135,7 +135,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SingleList.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="StringOperate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Algo.h" />
+    <ClInclude Include="SingleList.h" />
+    <ClInclude Include="StringOperate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
