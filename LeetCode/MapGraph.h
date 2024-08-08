@@ -2,7 +2,7 @@
 
 namespace Solution
 {
-	class Algorithm
+	class MapGraph
 	{
 	public:
 

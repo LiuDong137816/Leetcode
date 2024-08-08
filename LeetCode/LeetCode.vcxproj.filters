@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SingleList.cpp">
@@ -24,15 +24,33 @@
     <ClCompile Include="StringOperate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SingleList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Algo.h">
+    <ClInclude Include="DynamicArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringOperate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

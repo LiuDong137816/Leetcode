@@ -135,12 +135,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryTree.cpp" />
+    <ClCompile Include="DynamicArray.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapGraph.cpp" />
     <ClCompile Include="SingleList.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Demo.cpp" />
     <ClCompile Include="StringOperate.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Algo.h" />
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="MapGraph.h" />
     <ClInclude Include="SingleList.h" />
     <ClInclude Include="StringOperate.h" />
   </ItemGroup>

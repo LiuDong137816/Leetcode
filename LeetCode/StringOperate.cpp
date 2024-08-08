@@ -1,5 +1,7 @@
 #include <stack>
 #include <algorithm>
+#include <unordered_map>
+#include <set>
 #include "StringOperate.h"
 
 namespace Solution
@@ -189,5 +191,117 @@ namespace Solution
 			return res.substr(startPos);
 		}
 		return "0";
+	}
+	std::vector<int> StringOperate::findSubstring(std::string s, std::vector<std::string>& words)
+	{
+		std::unordered_map<std::string, int> counts;
+		for (std::string word : words)
+			counts[word]++;
+		std::vector<int> res;
+		int n = s.size(), num = words.size();
+		if (0 == n || 0 == num)
+			return res;
+		int len = words[0].size();
+
+		for (int i = 0; i < n - num * len + 1; i++) {
+			std::unordered_map<std::string, int> seen;
+			int j = 0;
+			for (; j < num; j++) {
+				std::string word = s.substr(i + j * len, len);
+				if (counts.find(word) != counts.end()) {
+					seen[word]++;
+					if (seen[word] > counts[word]) {
+						break;
+					}
+				}
+				else
+					break;
+			}
+			if (j == num)  res.push_back(i);
+		}
+		return res;
+	}
+	bool StringOperate::isMatch(std::string s, std::string p)
+	{
+		int sLen = s.length(), pLen = p.length(), i = 0, j = 0, iStart = -1, jStart = -1;
+		for (i = 0, j = 0; i < s.length(); i++, j++) {
+			if (p[j] == '*') {
+				iStart = i;
+				jStart = j;
+				--i;
+			}
+			else {
+				if (s[i] != p[j] && p[j] != '?') {
+					if (iStart >= 0) {
+						i = iStart++;
+						j = jStart;
+					}
+					else return false;
+				}
+			}
+		}
+		while (p[j] == '*')
+		{
+			++j;
+		}
+		return j == pLen;
+	}
+	bool StringOperate::isIsomorphic(std::string s, std::string t)
+	{
+		int sLen = s.size();
+		int dataA[256] = { 0 }, dataB[256] = { 0 };
+		for (int i = 0; i < sLen; i++) {
+			if (dataA[i] != dataB[i])
+				return false;
+			dataA[s[i]] = i + 1;
+			dataB[t[i]] = i + 1;
+		}
+		return true;
+	}
+	std::vector<std::vector<std::string>> StringOperate::groupAnagrams(std::vector<std::string>& strs)
+	{
+		std::unordered_map<std::string, std::multiset<std::string>> mp;
+		for (std::string s : strs) {
+			std::string t = s;
+			sort(t.begin(), t.end());
+			mp[t].insert(s);
+		}
+		std::vector<std::vector<std::string>> sres;
+		for (auto m : mp) {
+			std::vector<std::string> svec(m.second.begin(), m.second.end());
+			sres.push_back(svec);
+		}
+		return sres;
+	}
+	int StringOperate::numDistinct(std::string s, std::string t)
+	{
+		int m = t.length(), n = s.length();
+		std::vector<std::vector<int>> dp(m + 1, std::vector<int>(n + 1, 0));
+		for (int j = 0; j <= n; j++) dp[0][j] = 1;
+		for (int j = 1; j <= n; j++)
+			for (int i = 1; i <= m; i++)
+				dp[i][j] = dp[i][j - 1] + (t[i - 1] == s[j - 1] ? dp[i - 1][j - 1] : 0);
+		return dp[m][n];
+	}
+	std::string StringOperate::convertToTitle(int n)
+	{
+		std::string res;
+		while (n)
+		{
+			int tmp = n % 26;
+			if (0 == tmp) {
+				tmp = 25;
+				n /= 26;
+				--n;
+			}
+			else {
+				--tmp;
+				n /= 26;
+			}
+
+			res += ('A' + tmp);
+		}
+		reverse(res.begin(), res.end());
+		return res;
 	}
 }
