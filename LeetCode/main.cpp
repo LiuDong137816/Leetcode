@@ -47,6 +47,11 @@ void Print(const Entity& e)
 
 
 
+struct Conversion
+{
+	operator float() { return 0.33; }
+};
+
 void main()
 {
 	Example e("uu");
@@ -72,5 +77,7 @@ void main()
 	/*Entity *e = nullptr;
 	e->PrintType();*/
 	//std::cout << e->GetName();
+	Conversion con;
+	std::cout << float(con) << std::endl;
 	std::cin.get();
 }
